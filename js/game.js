@@ -6,6 +6,7 @@ snake[0] = {
     x: 8 * box,
     y: 8 * box
 }
+var score = 0;
 let direction = "right";
 
 var points = 0;
@@ -16,8 +17,14 @@ var food = {
 }
 
 function CriarBG(){
-    context.fillStyle = "Lightgreen";
+    let bgcolors = ['Lightgreen','green','red']; // cores do fundo do jogo
+    let bgpoints = [0,5,8]; // pontos necessários para mudar o fundo
+    for( let i = 0; i < bgcolors.length; i++){
+        if(score >= bgpoints[i]){
+        context.fillStyle = bgcolors[i];
+    }
     context.fillRect(0, 0, 16 * box, 16 * box);
+}
 }
 
 function Snake(){
@@ -28,7 +35,7 @@ function Snake(){
 }
 
 function DrawFood(){
-    context.fillStyle = "red";
+    context.fillStyle = "blue";
     context.fillRect(food.x, food.y, box, box);
 }
 
@@ -46,6 +53,9 @@ function update(event){
 }
 
 function Start(){
+
+
+
     if(snake[0].x > 15 * box && direction == "right") snake[0].x = 0;
     if(snake[0].x < 0 && direction == "left") snake[0].x = 16 * box;
     if(snake[0].y > 15 * box && direction == "up") snake[0].y = 0;
@@ -55,7 +65,9 @@ function Start(){
     for ( i = 1; i < snake.length; i++){
         if(snake[0].x == snake[i].x && snake[0].y == snake[i].y){
             clearInterval;
-            alert("Game Over");
+            alert("Game Over - " + score +" pontos");
+
+
 
         }
     }
@@ -76,7 +88,7 @@ if(direction == "down") snakeY -= box;
 if(snake[0].x == food.x && snake[0].y == food.y) {
     food.x = Math.floor(Math.random() * 15 + 1) * box;
     food.y = Math.floor(Math.random() * 15 + 1) * box;
-
+    score = score + 1;
  }else{
 snake.pop();
  }
@@ -92,4 +104,6 @@ snake.unshift(newhead);
 
 Start();
 
+
 let jogo = setInterval(Start, 100);
+
